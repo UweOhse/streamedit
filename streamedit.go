@@ -621,17 +621,20 @@ func mainLoop() {
 		buf=buf[:bufsize]
 		n, err := os.Stdin.Read(buf)
 		buf=buf[:n]
-		if n!=0 || true {
+		if n!=0 {
 			editorLoop(buf)
-
 		}
-		// fmt.Fprintf(os.Stderr, "read returned %d %v\n", n, err);
 		if err != nil {
 			if err != io.EOF {
 				fmt.Fprintf(os.Stderr,"failed to read: %s\n", err);
 				os.Exit(1);
 			}
 			break;
+		}
+		err = outBuf.Flush() // Don't forget to flush!
+		if err != nil {
+			fmt.Fprintf(os.Stderr,"failed to write: %s\n", err);
+			os.Exit(1);
 		}
 	}
 	endHandling()
@@ -647,7 +650,6 @@ func main() {
 		return
 	}
 	outBuf = bufio.NewWriter(os.Stdout)
-
 
 	if seedOption<0 {
 		rand.Seed(time.Now().UnixNano())
