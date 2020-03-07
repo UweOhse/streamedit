@@ -45,13 +45,15 @@ streamedit.md: streamedit.md.in Makefile
 install-man: streamedit.1
 	install -c -d $(MAN1DIR)
 	install -c $< $(MAN1DIR)
+install-bin: streamedit
+	install -c -d $(BINDIR)
+	install -c $< $(BINDIR)
 
 streamedit.1: streamedit.md
 	pandoc --standalone --from markdown-smart-definition_lists+escaped_line_breaks --to man $< -o $@.t
 	mv $@.t $@
 
-install: streamedit check
-	install -c -d $< $(BINDIR)
+install: install-man install-bin
 	
 
 cover.out: streamedit-covering test
