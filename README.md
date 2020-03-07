@@ -16,7 +16,7 @@ _Warning_ : if a complete stranger can get you `su` and execute `make`, then you
 
 # Usage
 
-See ./streamedit.md
+See [streamedit.md](./streamedit.md).
 
 # License
 
