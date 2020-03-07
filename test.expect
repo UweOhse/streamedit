@@ -1,0 +1,277 @@
+# abuse
+bad specification garbage: strconv.ParseUint: parsing "garbage": invalid syntax
+Try streamedit --help for more information.
+2
+bad specification: empty string.
+Try streamedit --help for more information.
+2
+Try streamedit --help for more information.
+2
+
+# r works
+0000000   !  si   G   ; soh ack
+0000006
+0000000   b   *   \   X   h   N
+0000006
+
+# R works (no output is good)
+0000000   b   *   \   X   h   N
+0000006
+0000000   b   *   \   X   N stx
+0000006
+
+# - works
+bcdef
+
+# N works
+abcdef
+bcdef
+ef
+def
+cdef
+bcdef
+bad specification -1: strconv.ParseUint: parsing "-1": invalid syntax
+Try streamedit --help for more information.
+
+
+# + works
+@abcdef
+@@abcdef
+@@@abcdef
+@@@@abcdef
+ab@cdef
+ab@@cdef
+ab@@@cdef
+ab@@@@cdef
+bad specification +o: strconv.ParseUint: parsing "": invalid syntax
+Try streamedit --help for more information.
+
+bad specification +o400: strconv.ParseUint: parsing "400": value out of range
+Try streamedit --help for more information.
+
+bad specification +x: strconv.ParseUint: parsing "": invalid syntax
+Try streamedit --help for more information.
+
+bad specification +x100: strconv.ParseUint: parsing "100": value out of range
+Try streamedit --help for more information.
+
+bad specification +c: not exactly one character after the c.
+Try streamedit --help for more information.
+
+bad specification +caa: not exactly one character after the c.
+Try streamedit --help for more information.
+
+bad specification +: empty byte specification
+Try streamedit --help for more information.
+
+
+# + does not append to line end
+abcdef
+abcde@f
+
+# +r works
+0000000   a   b   !  si   c   d   e   f
+0000010
+0000000   a   b   b   *   c   d   e   f
+0000010
+
+# = works
+@bcdef
+@bcdef
+@@cdef
+@@@def
+bad specification =: empty byte specification
+Try streamedit --help for more information.
+
+
+# Nr works
+cdef
+bcdef
+bad specification 0r: invalid prefix.
+Try streamedit --help for more information.
+
+abcdef
+
+# | works
+cbcdef
+cbcdef
+efcdef
+moodef
+# O works
+cbcdef
+cbcdef
+efcdef
+moodef
+
+# & works
+Abcdef
+Abcdef
+ABcdef
+ABCdef
+
+# A works
+Abcdef
+Abcdef
+ABcdef
+ABCdef
+
+# ^ works
+Abcdef
+Abcdef
+ABcdef
+ABCdef
+
+# | works with high bit
+0000000 e1 e2 e3 e4 e5 e6
+0000006
+
+0000000 e1 e2 e3 e4 e5 e6
+0000006
+
+0000000 e1 e2 e3 e4 e5 e6
+0000006
+
+
+# v works
+abcf
+a@@@ef
+@@@def
+@@@df
+bad specification v: expected / and number.
+Try streamedit --help for more information.
+
+
+# v works with pfx
+abcdefabcf
+abcdefa@@@ef
+abcdef@@@def
+abcdef@@@df
+bad specification v: expected / and number.
+Try streamedit --help for more information.
+
+
+# q works
+f
+f
+@@@ef
+@@@def
+@@@f
+@@@df
+bad specification q: expected / and number.
+Try streamedit --help for more information.
+
+
+# p works
+abde
+abdef
+abdef
+bcdf
+
+# binary data works
+@ABCDEFGHIJKLMNO
+`abcdefghijklmno
+
+# @ works
+bcdef
+cdef
+ef
+f
+abf
+abf
+
+# loops work
+ace
+bdf
+abefcd
+
+# append to end works
+abcdef@
+abcdef@@
+abcdef@@@@@
+0000000 61 62 63 64 65 66 21 0f
+0000010
+0000000 61 62 63 64 65 66 e2 aa
+0000010
+0000000 61 62 63 64 65 66 f9 e0 fa
+0000011
+
+# anything else after end fails
+bad specification: - follows an end action.
+Try streamedit --help for more information.
+
+bad specification: p follows an end action.
+Try streamedit --help for more information.
+
+bad specification: r follows an end action.
+Try streamedit --help for more information.
+
+bad specification: R follows an end action.
+Try streamedit --help for more information.
+
+bad specification: |1 follows an end action.
+Try streamedit --help for more information.
+
+bad specification: O1 follows an end action.
+Try streamedit --help for more information.
+
+bad specification: &1 follows an end action.
+Try streamedit --help for more information.
+
+bad specification: A1 follows an end action.
+Try streamedit --help for more information.
+
+bad specification: ^1 follows an end action.
+Try streamedit --help for more information.
+
+bad specification: =1 follows an end action.
+Try streamedit --help for more information.
+
+bad specification: vca follows an end action.
+Try streamedit --help for more information.
+
+bad specification: qca follows an end action.
+Try streamedit --help for more information.
+
+bad specification: 6@ follows an end action.
+Try streamedit --help for more information.
+
+
+# wildcards work
+abcdef
+
+ABCDEF
+# paste works
+acbd
+acd@b
+acdb@
+acd@b
+# the X...X removal example
+abcghimno
+
+# two searches must not directly follow each other
+error: invalid search. two searches directly following each other must not search for the same byte.
+Try streamedit --help for more information.
+
+# ~ handles delete (0)
+0000000 61 63 64 65 66
+0000005
+0000000 61 63 64 65 66
+0000005
+# ~ handles insert (1)
+0000000 61 0f 62 63 64 65 66
+0000007
+0000000 61 aa 62 63 64 65 66
+0000007
+# ~ handles flip (2)
+0000000 61 9d 63 64 65 66
+0000006
+# ~ handles set (3)
+0000000 61 f9 63 64 65 66
+0000006
+0000000 61 d3 63 64 65 66
+0000006
+# ~ handles bitflip (4)
+0000000 61 72 63 64 65 66
+0000006
+0000000 61 63 63 64 65 66
+0000006
